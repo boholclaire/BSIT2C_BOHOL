@@ -69,100 +69,148 @@ public class Patient {
         System.out.println("Thank you");
              
     }
-    
-     public void addPatient(){
+   public void addPatient() {
         Scanner sc = new Scanner(System.in);
         config conf = new config();
-        
-         System.out.print("First Name: ");
-        String fname = sc.next();
+
+        System.out.print("First Name: ");
+        String fname = sc.nextLine();
+
         System.out.print("Last Name: ");
-        String lname = sc.next();
-        System.out.print("Date of Birth(YYYY-MM-DD):");
-        String birth = sc.next();
-        System.out.print("Age:");
-        String  age = sc.next();
+        String lname = sc.nextLine();
+
+        String birth = getValidInput(sc, "Date of Birth (YYYY-MM-DD): ", this::isValidDate, "Invalid date format. Please try again.");
+
+        String age = getValidInput(sc, "Age: ", this::isValidAge, "Invalid age. Please enter a valid positive number.");
+
         System.out.print("Address: ");
-        String address = sc.next();
-        System.out.print("Contact Number: ");
-        String contact = sc.next();
+        String address = sc.nextLine();
 
-        String sql = "INSERT INTO tbl_Patient (p_fname, p_lname,p_dob, p_age, p_address, p_contactnumber) VALUES (?, ?, ?, ?, ?,?)";
-        conf.addRecord(sql, fname, lname,birth,age, address, contact);
-      
-      
-    }
-     
-    
-        public void viewPatient(){
-         Scanner sc = new Scanner(System.in);
-         config conf = new config();   
-         
-         String cqry = "SELECT * FROM tbl_Patient";
-         String[] hrds = {"PatientID","First Name","Last Name","Date of Birth","Age","Address","Contact Number"};
-         String[]clmns = {"p_PatientID","p_fname","p_lname","p_dob","p_age","p_address","p_contactnumber"};
-         conf.viewRecords(cqry, hrds, clmns );
+        String contact = getValidInput(sc, "Contact Number: ", this::isValidContactNumber, "Invalid contact number. It must be exactly 11 digits.");
+
+        String sql = "INSERT INTO tbl_Patient (p_fname, p_lname, p_dob, p_age, p_address, p_contactnumber) VALUES (?, ?, ?, ?, ?, ?)";
+        try {
+            conf.addRecord(sql, fname, lname, birth, age, address, contact);
+            System.out.println("Patient added successfully.");
+        } catch (Exception e) {
+            System.out.println("Error adding patient: " + e.getMessage());
         }
-        
-        private void updatePatient(){
-            
+    }
+
+    public void viewPatient() {
         Scanner sc = new Scanner(System.in);
         config conf = new config();
-            System.out.println("Enter ID to update");  
-            int id = sc.nextInt();
 
-             
-       while(conf.getSingleValue("SELECT p_PatientID FROM tbl_Patient WHERE p_PatientID = ?",  id)  == 0){
-            System.out.println("SELECTED ID DOESNT EXIST");
-            System.out.println("PLEASE TRY AGAIN:");
+        String query = "SELECT * FROM tbl_Patient";
+        String[] headers = {"PatientID", "First Name", "Last Name", "Date of Birth", "Age", "Address", "Contact Number"};
+        String[] columns = {"p_PatientID", "p_fname", "p_lname", "p_dob", "p_age", "p_address", "p_contactnumber"};
+        conf.viewRecords(query, headers, columns);
+    }
+
+    public void updatePatient() {
+        Scanner sc = new Scanner(System.in);
+        config conf = new config();
+
+        System.out.println("Enter ID to update: ");
+        int id = sc.nextInt();
+        sc.nextLine(); // Consume the newline character after nextInt()
+
+        while (conf.getSingleValue("SELECT p_PatientID FROM tbl_Patient WHERE p_PatientID = ?", id) == 0) {
+            System.out.println("SELECTED ID DOES NOT EXIST. PLEASE TRY AGAIN:");
             id = sc.nextInt();
-    }
-         System.out.println("Enter new First Name:");
-         String ufname = sc.next();
-         System.out.println("Enter new Last Name:");
-         String ulname = sc.next();
-         System.out.print("Enter new Date of Birth(YYYY-MM-DD):");
-         String ubirth = sc.next();
-         System.out.println("Enter new Age:");
-         String uage = sc.next();
-         System.out.println("Enter new Address:");
-         String uaddress = sc.next();
-         System.out.println("Enter new Contact Number:");
-         String ucontact = sc.next();
-      
-      String qry = "UPDATE tbl_Patient SET p_fname = ?,p_lname = ?,p_dob=?,p_age = ?, p_address = ?, p_contactnumber = ? WHERE p_PatientID= ?";
-      conf.updateRecord(qry, ufname, ulname, ubirth, uage, uaddress, ucontact,id );
-      
-        
+            sc.nextLine(); // Consume the newline character
         }
-        
-      public void deletePatient(){
+
+        System.out.println("Enter new First Name: ");
+        String ufname = sc.nextLine();
+        System.out.println("Enter new Last Name: ");
+        String ulname = sc.nextLine();
+
+        String ubirth = getValidInput(sc, "Enter new Date of Birth (YYYY-MM-DD): ", this::isValidDate, "Invalid date format. Please try again.");
+
+        String uage = getValidInput(sc, "Enter new Age: ", this::isValidAge, "Invalid age. Please enter a valid positive number.");
+
+        System.out.println("Enter new Address: ");
+        String uaddress = sc.nextLine();
+
+        String ucontact = getValidInput(sc, "Enter new Contact Number: ", this::isValidContactNumber, "Invalid contact number. It must be exactly 11 digits.");
+
+        String query = "UPDATE tbl_Patient SET p_fname = ?, p_lname = ?, p_dob = ?, p_age = ?, p_address = ?, p_contactnumber = ? WHERE p_PatientID = ?";
+        try {
+            conf.updateRecord(query, ufname, ulname, ubirth, uage, uaddress, ucontact, id);
+            System.out.println("Patient updated successfully.");
+        } catch (Exception e) {
+            System.out.println("Error updating patient: " + e.getMessage());
+        }
+    }
+
+    public void deletePatient() {
         Scanner sc = new Scanner(System.in);
         config conf = new config();
-   
-            System.out.print("Enter Patient ID to delete:");
-            int id = sc.nextInt();
-            
-            String checkSql = "SELECT p_PatientID FROM tbl_Patient WHERE p_PatientID = ?";
+
+        System.out.print("Enter Patient ID to delete: ");
+        int id = sc.nextInt();
+
+        String checkSql = "SELECT p_PatientID FROM tbl_Patient WHERE p_PatientID = ?";
         if (conf.getSingleValue(checkSql, id) == 0) {
             System.out.println("Patient ID does not exist. Please try again with a valid ID.");
             return;
         }
-        
-     
+
         System.out.print("Are you sure you want to delete patient with ID " + id + "? (yes/no): ");
         String confirmation = sc.next();
-        
         if (!confirmation.equalsIgnoreCase("yes")) {
             System.out.println("Deletion canceled.");
-            return; 
+            return;
         }
-         String sql;
-          sql = "DELETE FROM tbl_Patient WHERE p_PatientID= ?";
-           conf.deleteRecord(sql,String.valueOf(id));
- 
+
+        String deleteSql = "DELETE FROM tbl_Patient WHERE p_PatientID = ?";
+        try {
+            conf.deleteRecord(deleteSql, String.valueOf(id));
+            System.out.println("Patient deleted successfully.");
+        } catch (Exception e) {
+            System.out.println("Error deleting patient: " + e.getMessage());
         }
     }
+
+    private String getValidInput(Scanner sc, String prompt, InputValidator validator, String errorMessage) {
+        String input;
+        while (true) {
+            System.out.print(prompt);
+            input = sc.nextLine();
+            if (validator.isValid(input)) {
+                break;
+            } else {
+                System.out.println(errorMessage);
+            }
+        }
+        return input;
+    }
+
+    private interface InputValidator {
+        boolean isValid(String input);
+    }
+
+    private boolean isValidDate(String date) {
+        return date.matches("^(\\d{4})-(\\d{2})-(\\d{2})$");
+    }
+
+    private boolean isValidAge(String age) {
+        try {
+            int ageInt = Integer.parseInt(age);
+            return ageInt > 0;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    private boolean isValidContactNumber(String contact) {
+        return contact.matches("\\d{11}");
+    }
+}
+
+
+    
             
        
       

@@ -73,11 +73,11 @@ public class config {
 
             // Print the headers dynamically
             StringBuilder headerLine = new StringBuilder();
-            headerLine.append("--------------------------------------------------------------------------------\n| ");
+            headerLine.append("-------------------------------------------------------------------------------------------------------------------------\n| ");
             for (String header : columnHeaders) {
                 headerLine.append(String.format("%-20s | ", header)); // Adjust formatting as needed
             }
-            headerLine.append("\n--------------------------------------------------------------------------------");
+            headerLine.append("\n------------------------------------------------------------------------------------------------------------------------");
 
             System.out.println(headerLine.toString());
 
@@ -90,7 +90,7 @@ public class config {
                 }
                 System.out.println(row.toString());
             }
-            System.out.println("--------------------------------------------------------------------------------");
+            System.out.println("-------------------------------------------------------------------------------------------------------------------------------");
 
         } catch (SQLException e) {
             System.out.println("Error retrieving records: " + e.getMessage());
@@ -200,12 +200,9 @@ public class config {
         return result;
     }
 
-    void deleteRecord(String sqlDelete, int id) {
+    void viewRecords(String cqry, String[] hrds, String[] clmns, int patientID) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-   
-
     
 }
 
