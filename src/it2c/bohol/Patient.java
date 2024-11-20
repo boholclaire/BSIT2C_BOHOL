@@ -54,6 +54,7 @@ public class Patient {
                 
                 case 5:
                     
+                     System.out.println("Exiting...");
                     
                 break;
                 
@@ -62,11 +63,13 @@ public class Patient {
                     break;
             }
             
-          System.out.println("Continue? (yes/No): ");
-            response = sc.nextLine();
+          System.out.println("Do You Want to Continue? (yes/No): ");
+            response = sc.next();
+            
+            
         } while(response.equalsIgnoreCase("yes"));
         
-        System.out.println("Thank you");
+
              
     }
    public void addPatient() {

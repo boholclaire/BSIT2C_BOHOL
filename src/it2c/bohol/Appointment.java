@@ -31,6 +31,7 @@ public class Appointment {
             
             switch(act){
                 case 1:         
+                    
                     a.addAppointment();
                    a.viewAppointment();     
              
@@ -60,6 +61,7 @@ public class Appointment {
                 
                 case 5:
                     
+                     System.out.println("Exiting...");
                     
                 break;
                 

@@ -17,7 +17,7 @@ public class IT2CBOHOL {
             
             System.out.println("1. REGISTRATION");
             System.out.println("2. APPOINTMENT");
-            System.out.println("3. MEDICAL RECORDS");      
+            System.out.println("3. REPORT");      
             System.out.println("4. Exit");
             
             System.out.println("Enter action:");           
@@ -38,10 +38,16 @@ public class IT2CBOHOL {
                 
                 case 3:  
                     
+                    Report r = new Report();
+                    r.report_type();
+                    
+                
                 break;
                 
                 case 4:               
                    
+                     System.out.println("Exiting...");
+                    
                 break;
                 
                  default:

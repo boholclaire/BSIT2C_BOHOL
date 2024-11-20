@@ -200,9 +200,8 @@ public class config {
         return result;
     }
 
-    void viewRecords(String cqry, String[] hrds, String[] clmns, int patientID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     
+
+ 
 }
 
