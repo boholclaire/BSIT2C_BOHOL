@@ -16,39 +16,49 @@ public class IT2CBOHOL {
             System.out.println("BIRTHING CENTER APP");
             
             System.out.println("1. REGISTRATION");
-            System.out.println("2. APPOINTMENT");
-            System.out.println("3. REPORT");      
-            System.out.println("4. Exit");
+            System.out.println("2. PREGNANCY DETAILS");
+            System.out.println("3. APPOINTMENT");
+            System.out.println("4. REPORT");
+            System.out.println("5. Exit");      
             
-            System.out.println("Enter action:");           
+            System.out.println("Enter action:");        
             int  action = sc.nextInt();
             
             switch(action){
                 
                 case 1:
                                 Patient p = new Patient();
-                                   p.ptransaction();
+                                   p.pbirthing();
                break;
                 
                 case 2: 
                             
-                             Appointment  a = new Appointment();
-                                  a.atransaction();
+                              PregnancyDetails  pd = new PregnancyDetails();
+                                 pd.prbirthing();
+                          
                 break;
                 
                 case 3:  
-                    
-                    Report r = new Report();
-                    r.report_type();
-                    
-                
+                       
+                               Appointment  a = new Appointment();
+                                    a.abirthing();
+                      
                 break;
                 
-                case 4:               
+                case 4:
+                    
+                                  Report r = new Report();
+                                      r.report_type();
+                
+                   break;
                    
-                     System.out.println("Exiting...");
+                   
+                case 5:
                     
-                break;
+                        System.out.println("Exiting...");
+   
+                          break;
+           
                 
                  default:
                     System.out.println("Invalid choice. Please try again.");
@@ -56,6 +66,7 @@ public class IT2CBOHOL {
             }
       System.out.println("Continue? (yes/No): ");
             response = sc.nextLine();
+            
         } while(response.equalsIgnoreCase("yes"));
         
         System.out.println("Thank you");

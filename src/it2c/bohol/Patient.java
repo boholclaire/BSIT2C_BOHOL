@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class Patient {
     
-      public void ptransaction(){
+      public void pbirthing(){
      Scanner sc = new Scanner(System.in);
      String response;
      do{
@@ -66,6 +66,9 @@ public class Patient {
           System.out.println("Do You Want to Continue? (yes/No): ");
             response = sc.next();
             
+             if (response.equalsIgnoreCase("no")) {
+                return; 
+            }
             
         } while(response.equalsIgnoreCase("yes"));
         
@@ -92,12 +95,8 @@ public class Patient {
         String contact = getValidInput(sc, "Contact Number: ", this::isValidContactNumber, "Invalid contact number. It must be exactly 11 digits.");
 
         String sql = "INSERT INTO tbl_Patient (p_fname, p_lname, p_dob, p_age, p_address, p_contactnumber) VALUES (?, ?, ?, ?, ?, ?)";
-        try {
-            conf.addRecord(sql, fname, lname, birth, age, address, contact);
-            System.out.println("Patient added successfully.");
-        } catch (Exception e) {
-            System.out.println("Error adding patient: " + e.getMessage());
-        }
+         conf.addRecord(sql, fname, lname, birth, age, address, contact);
+     
     }
 
     public void viewPatient() {
@@ -116,12 +115,12 @@ public class Patient {
 
         System.out.println("Enter ID to update: ");
         int id = sc.nextInt();
-        sc.nextLine(); // Consume the newline character after nextInt()
+        sc.nextLine(); 
 
         while (conf.getSingleValue("SELECT p_PatientID FROM tbl_Patient WHERE p_PatientID = ?", id) == 0) {
             System.out.println("SELECTED ID DOES NOT EXIST. PLEASE TRY AGAIN:");
             id = sc.nextInt();
-            sc.nextLine(); // Consume the newline character
+            sc.nextLine();
         }
 
         System.out.println("Enter new First Name: ");
@@ -129,7 +128,7 @@ public class Patient {
         System.out.println("Enter new Last Name: ");
         String ulname = sc.nextLine();
 
-        String ubirth = getValidInput(sc, "Enter new Date of Birth (YYYY-MM-DD): ", this::isValidDate, "Invalid date format. Please try again.");
+        String ubirth = getValidInput(sc, "Enter Date of Birth (YYYY-MM-DD): ", this::isValidDate, "Invalid date format. Please try again.");
 
         String uage = getValidInput(sc, "Enter new Age: ", this::isValidAge, "Invalid age. Please enter a valid positive number.");
 
